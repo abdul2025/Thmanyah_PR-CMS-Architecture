@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thmanyah CMS Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease-out;
+        }
+        .layer-section {
+            display: none;
+        }
+        .layer-section.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
+    <div class="w-full min-h-screen p-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-white mb-2">Thmanyah CMS Architecture</h1>
+            <p class="text-slate-400">Scalable Video Content Management & Discovery System</p>
+        </div>
+
+        <div class="flex gap-2 mb-6 flex-wrap">
+            <button onclick="showLayer('all')" class="layer-btn bg-blue-600 text-white px-4 py-2 rounded-lg transition-all shadow-lg" data-layer="all">
+                All Layers
+            </button>
+            <button onclick="showLayer('cdn')" class="layer-btn bg-slate-700 text-slate-300 hover:bg-slate-600 px-4 py-2 rounded-lg transition-all" data-layer="cdn">
+                CDN Layer
+            </button>
+            <button onclick="showLayer('api')" class="layer-btn bg-slate-700 text-slate-300 hover:bg-slate-600 px-4 py-2 rounded-lg transition-all" data-layer="api">
+                API Layer
+            </button>
+            <button onclick="showLayer('async')" class="layer-btn bg-slate-700 text-slate-300 hover:bg-slate-600 px-4 py-2 rounded-lg transition-all" data-layer="async">
+                Async Layer
+            </button>
+            <button onclick="showLayer('data')" class="layer-btn bg-slate-700 text-slate-300 hover:bg-slate-600 px-4 py-2 rounded-lg transition-all" data-layer="data">
+                Data Layer
+            </button>
+        </div>
+
+        <div class="relative">
+            <div id="cdn-layer" class="layer-section active mb-8 animate-fadeIn">
+                <div class="bg-gradient-to-r from-purple-900/40 to-purple-800/40 rounded-xl p-6 border border-purple-500/30">
+                    <h2 class="text-xl font-bold text-purple-300 mb-4">Layer 1: Content Delivery Network</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-purple-500/20">
+                            <h3 class="font-semibold text-white mb-2">AWS CloudFront</h3>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Global Edge Locations</li>
+                                <li>Video Streaming (HLS/DASH)</li>
+                                <li>Static Assets Delivery</li>
+                                <li>Cache TTL: 24h (videos), 5m (API)</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-purple-500/20">
+                            <h3 class="font-semibold text-white mb-2">Application Load Balancer</h3>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Request Distribution</li>
+                                <li>Health Checks</li>
+                                <li>SSL/TLS Termination</li>
+                                <li>Auto-scaling Integration</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center my-4">
+                    <div class="w-1 h-8 bg-gradient-to-b from-purple-500 to-blue-500"></div>
+                </div>
+            </div>
+
+            <div id="api-layer" class="layer-section active mb-8 animate-fadeIn">
+                <div class="bg-gradient-to-r from-blue-900/40 to-blue-800/40 rounded-xl p-6 border border-blue-500/30">
+                    <h2 class="text-xl font-bold text-blue-300 mb-4">Layer 2: Application Services</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-blue-500/20">
+                            <h3 class="font-semibold text-white mb-3">CMS Service</h3>
+                            <div class="text-xs text-slate-400 mb-2">Django REST Framework + ECS Fargate</div>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>User Management & Auth (JWT)</li>
+                                <li>Content CRUD Operations</li>
+                                <li>Business Logic Layer</li>
+                                <li>Publishing Workflow</li>
+                                <li class="text-green-400 font-semibold mt-2">Auto-scale: 2-50 instances</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-blue-500/20">
+                            <h3 class="font-semibold text-white mb-3">Discovery Service</h3>
+                            <div class="text-xs text-slate-400 mb-2">AWS OpenSearch Cluster</div>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Full-Text Search (AR/EN)</li>
+                                <li>Autocomplete Suggestions</li>
+                                <li>Faceted Search & Filters</li>
+                                <li>Trending/Popular Content</li>
+                                <li class="text-green-400 font-semibold mt-2">Response: &lt;100ms</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mt-4 bg-slate-800/50 rounded-lg p-4 border border-blue-500/20">
+                        <h3 class="font-semibold text-white mb-3">Redis Cluster (ElastiCache)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2 text-sm text-slate-300">
+                            <div class="bg-slate-700/30 p-2 rounded">
+                                <div class="font-semibold text-yellow-400">API Cache</div>
+                                <div class="text-xs">5-15 min TTL</div>
+                            </div>
+                            <div class="bg-slate-700/30 p-2 rounded">
+                                <div class="font-semibold text-yellow-400">Autocomplete</div>
+                                <div class="text-xs">1 hour TTL</div>
+                            </div>
+                            <div class="bg-slate-700/30 p-2 rounded">
+                                <div class="font-semibold text-yellow-400">Session Store</div>
+                                <div class="text-xs">JWT tokens</div>
+                            </div>
+                            <div class="bg-slate-700/30 p-2 rounded">
+                                <div class="font-semibold text-yellow-400">Rate Limiting</div>
+                                <div class="text-xs">Per user/IP</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center my-4">
+                    <div class="w-1 h-8 bg-gradient-to-b from-blue-500 to-green-500"></div>
+                </div>
+            </div>
+
+            <div id="async-layer" class="layer-section active mb-8 animate-fadeIn">
+                <div class="bg-gradient-to-r from-green-900/40 to-green-800/40 rounded-xl p-6 border border-green-500/30">
+                    <h2 class="text-xl font-bold text-green-300 mb-4">Layer 3: Async Processing (Serverless)</h2>
+                    <div class="text-center text-green-300 font-semibold mb-4 text-lg">SNS → SQS → Lambda Fleet Architecture</div>
+                    <div class="mb-4">
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-green-500/20">
+                            <h3 class="font-semibold text-white mb-3">Amazon SNS (Fan-out Topics)</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+                                <div class="bg-green-900/20 p-2 rounded text-center">
+                                    <div class="text-xs font-semibold text-green-300">video-upload-topic</div>
+                                </div>
+                                <div class="bg-green-900/20 p-2 rounded text-center">
+                                    <div class="text-xs font-semibold text-green-300">analytics-events-topic</div>
+                                </div>
+                                <div class="bg-green-900/20 p-2 rounded text-center">
+                                    <div class="text-xs font-semibold text-green-300">content-update-topic</div>
+                                </div>
+                                <div class="bg-green-900/20 p-2 rounded text-center">
+                                    <div class="text-xs font-semibold text-green-300">notification-topic</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-green-500/20">
+                            <h4 class="font-semibold text-white text-sm text-center mb-3">Video Processing</h4>
+                            <div class="space-y-2 text-xs">
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">SQS Queue</div>
+                                    <div class="text-slate-400">video-processing-queue</div>
+                                </div>
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">Lambda Fleet</div>
+                                    <ul class="text-slate-300 mt-1">
+                                        <li>Generate thumbnails</li>
+                                        <li>Transcode (HLS/DASH)</li>
+                                        <li>Extract metadata</li>
+                                        <li>Upload to S3/CDN</li>
+                                    </ul>
+                                </div>
+                                <div class="text-center text-yellow-400 font-semibold">Concurrency: 50</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-green-500/20">
+                            <h4 class="font-semibold text-white text-sm text-center mb-3">Analytics Aggregation</h4>
+                            <div class="space-y-2 text-xs">
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">SQS Queue</div>
+                                    <div class="text-slate-400">analytics-aggregation-queue</div>
+                                </div>
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">Lambda Fleet</div>
+                                    <ul class="text-slate-300 mt-1">
+                                        <li>Aggregate view counts</li>
+                                        <li>Calculate trending</li>
+                                        <li>Update popularity</li>
+                                        <li>Cache in Redis</li>
+                                    </ul>
+                                </div>
+                                <div class="text-center text-yellow-400 font-semibold">Batch: 100 msgs/min</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-green-500/20">
+                            <h4 class="font-semibold text-white text-sm text-center mb-3">Search Indexing</h4>
+                            <div class="space-y-2 text-xs">
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">SQS Queue</div>
+                                    <div class="text-slate-400">opensearch-indexing-queue</div>
+                                </div>
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">Lambda Fleet</div>
+                                    <ul class="text-slate-300 mt-1">
+                                        <li>Index to OpenSearch</li>
+                                        <li>Update documents</li>
+                                        <li>Delete from index</li>
+                                        <li>Warm Redis cache</li>
+                                    </ul>
+                                </div>
+                                <div class="text-center text-yellow-400 font-semibold">Real-time indexing</div>
+                            </div>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-green-500/20">
+                            <h4 class="font-semibold text-white text-sm text-center mb-3">Notifications</h4>
+                            <div class="space-y-2 text-xs">
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">SQS Queue</div>
+                                    <div class="text-slate-400">notification-queue</div>
+                                </div>
+                                <div class="bg-slate-700/40 p-2 rounded">
+                                    <div class="font-semibold text-green-300">Lambda Fleet</div>
+                                    <ul class="text-slate-300 mt-1">
+                                        <li>Email notifications</li>
+                                        <li>Push notifications</li>
+                                        <li>Webhook callbacks</li>
+                                        <li>Slack integration</li>
+                                    </ul>
+                                </div>
+                                <div class="text-center text-yellow-400 font-semibold">Event-driven</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2">
+                        <div class="bg-green-900/20 p-3 rounded-lg text-center">
+                            <div class="text-green-400 font-semibold text-sm">Decoupling</div>
+                            <div class="text-xs text-slate-400">Services independent</div>
+                        </div>
+                        <div class="bg-green-900/20 p-3 rounded-lg text-center">
+                            <div class="text-green-400 font-semibold text-sm">Scalability</div>
+                            <div class="text-xs text-slate-400">Auto-scale Lambdas</div>
+                        </div>
+                        <div class="bg-green-900/20 p-3 rounded-lg text-center">
+                            <div class="text-green-400 font-semibold text-sm">Reliability</div>
+                            <div class="text-xs text-slate-400">DLQ + Retries</div>
+                        </div>
+                        <div class="bg-green-900/20 p-3 rounded-lg text-center">
+                            <div class="text-green-400 font-semibold text-sm">Fan-out</div>
+                            <div class="text-xs text-slate-400">Multiple consumers</div>
+                        </div>
+                        <div class="bg-green-900/20 p-3 rounded-lg text-center">
+                            <div class="text-green-400 font-semibold text-sm">Cost-effective</div>
+                            <div class="text-xs text-slate-400">Pay per execution</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center my-4">
+                    <div class="w-1 h-8 bg-gradient-to-b from-green-500 to-orange-500"></div>
+                </div>
+            </div>
+
+            <div id="data-layer" class="layer-section active mb-8 animate-fadeIn">
+                <div class="bg-gradient-to-r from-orange-900/40 to-orange-800/40 rounded-xl p-6 border border-orange-500/30">
+                    <h2 class="text-xl font-bold text-orange-300 mb-4">Layer 4: Data Storage</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-orange-500/20">
+                            <h3 class="font-semibold text-white mb-3">PostgreSQL</h3>
+                            <div class="text-xs text-slate-400 mb-2">Amazon RDS (Multi-AZ)</div>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Video metadata</li>
+                                <li>User management</li>
+                                <li>Categories & tags</li>
+                                <li>Relations</li>
+                                <li class="text-orange-400 mt-2">+ 2-3 Read Replicas</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-orange-500/20">
+                            <h3 class="font-semibold text-white mb-3">DynamoDB</h3>
+                            <div class="text-xs text-slate-400 mb-2">Serverless NoSQL</div>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Analytics events</li>
+                                <li>View counts</li>
+                                <li>Watch time logs</li>
+                                <li>Trending cache</li>
+                                <li class="text-orange-400 mt-2">Streams to SNS</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-orange-500/20">
+                            <h3 class="font-semibold text-white mb-3">Amazon S3</h3>
+                            <div class="text-xs text-slate-400 mb-2">Object Storage</div>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Raw video files</li>
+                                <li>Transcoded versions</li>
+                                <li>Thumbnails</li>
+                                <li>Static assets</li>
+                                <li class="text-orange-400 mt-2">Lifecycle policies</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-800/50 rounded-lg p-4 border border-orange-500/20">
+                            <h3 class="font-semibold text-white mb-3">OpenSearch</h3>
+                            <div class="text-xs text-slate-400 mb-2">Search Engine</div>
+                            <ul class="text-sm text-slate-300 space-y-1">
+                                <li>Indexed content</li>
+                                <li>Full-text search</li>
+                                <li>Aggregations</li>
+                                <li>Autocomplete</li>
+                                <li class="text-orange-400 mt-2">3-node cluster</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fadeIn">
+                <div class="bg-gradient-to-r from-red-900/40 to-red-800/40 rounded-xl p-6 border border-red-500/30">
+                    <h2 class="text-xl font-bold text-red-300 mb-4">Security Layer</h2>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-red-300">Authentication</div>
+                            <div class="text-xs">JWT (RS256) + Refresh Tokens</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-red-300">Authorization</div>
+                            <div class="text-xs">RBAC (Admin, Publisher, Editor, Viewer)</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-red-300">Rate Limiting</div>
+                            <div class="text-xs">Redis-backed (100-10k req/hour)</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-red-300">WAF Protection</div>
+                            <div class="text-xs">SQL Injection, XSS, DDoS prevention</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gradient-to-r from-indigo-900/40 to-indigo-800/40 rounded-xl p-6 border border-indigo-500/30">
+                    <h2 class="text-xl font-bold text-indigo-300 mb-4">Monitoring & Observability</h2>
+                    <div class="space-y-2 text-sm text-slate-300">
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-indigo-300">CloudWatch</div>
+                            <div class="text-xs">Logs, Metrics, Alarms (error rate, latency)</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-indigo-300">X-Ray</div>
+                            <div class="text-xs">Distributed tracing & service map</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-indigo-300">Custom Metrics</div>
+                            <div class="text-xs">Search latency, cache hit ratio, queue depth</div>
+                        </div>
+                        <div class="bg-slate-800/50 p-3 rounded">
+                            <div class="font-semibold text-indigo-300">Health Checks</div>
+                            <div class="text-xs">/api/v1/health endpoint (all services)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 bg-gradient-to-r from-slate-800 to-slate-700 rounded-xl p-6 border border-slate-600">
+                <h2 class="text-xl font-bold text-white mb-4 text-center">Performance Targets</h2>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-green-400">10M</div>
+                        <div class="text-xs text-slate-400">Users/Hour</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-blue-400">&lt;100ms</div>
+                        <div class="text-xs text-slate-400">Search Response</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-purple-400">99.9%</div>
+                        <div class="text-xs text-slate-400">Uptime SLA</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-yellow-400">Auto</div>
+                        <div class="text-xs text-slate-400">Scaling</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-bold text-orange-400">Global</div>
+                        <div class="text-xs text-slate-400">CDN Edge</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-8 text-center text-slate-500 text-sm">
+            <p>Thmanyah CMS Architecture v0.2 - 2026</p>
+        </div>
+    </div>
+
+    <script>
+        function showLayer(layer) {
+            var layers = ['cdn', 'api', 'async', 'data'];
+            var buttons = document.querySelectorAll('.layer-btn');
+            
+            buttons.forEach(function(btn) {
+                if (btn.dataset.layer === layer) {
+                    btn.className = 'layer-btn bg-blue-600 text-white px-4 py-2 rounded-lg transition-all shadow-lg';
+                } else {
+                    btn.className = 'layer-btn bg-slate-700 text-slate-300 hover:bg-slate-600 px-4 py-2 rounded-lg transition-all';
+                }
+            });
+            
+            if (layer === 'all') {
+                layers.forEach(function(l) {
+                    document.getElementById(l + '-layer').classList.add('active');
+                });
+            } else {
+                layers.forEach(function(l) {
+                    var element = document.getElementById(l + '-layer');
+                    if (l === layer) {
+                        element.classList.add('active');
+                    } else {
+                        element.classList.remove('active');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
