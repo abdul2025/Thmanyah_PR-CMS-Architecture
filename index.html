@@ -25,7 +25,8 @@
 <body class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
     <div class="w-full min-h-screen p-6">
         <div class="mb-6">
-            <h1 class="text-3xl font-bold text-white mb-2">Thmanyah CMS Architecture</h1>
+            <h3 class="text-1xl font-bold text-white mb-2" style="color: #bababa;">Author: Abdulwahab Alshehri</h3>
+            <h3 class="text-2xl font-bold text-white mb-2" style="color: #bababa;">Project Name: Thmanyah CMS Architecture </h3>
             <p class="text-slate-400">Scalable Video Content Management & Discovery System</p>
         </div>
 
@@ -126,6 +127,297 @@
                         </div>
                     </div>
                 </div>
+                <div class="mt-8 bg-gradient-to-r from-cyan-900/40 to-cyan-800/40 rounded-xl p-6 border border-cyan-500/30">
+                    <h2 class="text-2xl font-bold text-cyan-300 mb-6 text-center"> (API Endpoints)</h2>
+                    
+                    <!-- User Management -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-cyan-200 mb-4 border-b border-cyan-500/30 pb-2">User Management </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-slate-300">
+                                <thead class="bg-slate-800/50 text-cyan-300">
+                                    <tr>
+                                        <th class="p-3 text-left">Endpoint</th>
+                                        <th class="p-3 text-left">Method</th>
+                                        <th class="p-3 text-left">Description</th>
+                                        <th class="p-3 text-left">Auth</th>
+                                        <th class="p-3 text-left">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700">
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/auth/login/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">User login, returns JWT tokens</td>
+                                        <td class="p-3 text-slate-400">None</td>
+                                        <td class="p-3 text-xs">Access token 15min, refresh 7d</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/auth/refresh/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Rotate refresh token</td>
+                                        <td class="p-3 text-yellow-400">Refresh Token</td>
+                                        <td class="p-3 text-xs">Returns new access token</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/auth/logout/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Logout user, blacklist tokens</td>
+                                        <td class="p-3 text-red-400">Required</td>
+                                        <td class="p-3 text-xs">Tokens invalidated in Redis</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/users/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">List users (paginated)</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Default 20/page</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/users/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Create a new user</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Validates email & role</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/users/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Get user details</td>
+                                        <td class="p-3 text-yellow-400">Admin/Self</td>
+                                        <td class="p-3 text-xs">Self: own profile only</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/users/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-yellow-900/40 text-yellow-300 px-2 py-1 rounded text-xs">PUT/PATCH</span></td>
+                                        <td class="p-3">Update user details</td>
+                                        <td class="p-3 text-yellow-400">Admin/Self</td>
+                                        <td class="p-3 text-xs">Self cannot change role</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/users/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-red-900/40 text-red-300 px-2 py-1 rounded">DELETE</span></td>
+                                        <td class="p-3">Soft delete user</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Sets is_active=false</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <!-- Content Management -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-cyan-200 mb-4 border-b border-cyan-500/30 pb-2">Content Management</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-slate-300">
+                                <thead class="bg-slate-800/50 text-cyan-300">
+                                    <tr>
+                                        <th class="p-3 text-left">Endpoint</th>
+                                        <th class="p-3 text-left">Method</th>
+                                        <th class="p-3 text-left">Description</th>
+                                        <th class="p-3 text-left">Auth</th>
+                                        <th class="p-3 text-left">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700">
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">List videos</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">Cached 5min in Redis</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Upload a video</td>
+                                        <td class="p-3 text-yellow-400">Editor/Publisher/Admin</td>
+                                        <td class="p-3 text-xs">Async: SNS/SQS/Lambda for processing</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Get video details</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">Cached 15min in Redis</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-yellow-900/40 text-yellow-300 px-2 py-1 rounded text-xs">PUT/PATCH</span></td>
+                                        <td class="p-3">Update video</td>
+                                        <td class="p-3 text-yellow-400">Editor/Publisher/Admin</td>
+                                        <td class="p-3 text-xs">Async: Update search index & cache</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-red-900/40 text-red-300 px-2 py-1 rounded">DELETE</span></td>
+                                        <td class="p-3">Delete video</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Async removal from S3/OpenSearch</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/&lt;uuid&gt;/publish/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Publish video</td>
+                                        <td class="p-3 text-yellow-400">Publisher/Admin</td>
+                                        <td class="p-3 text-xs">Async notifications via SNS/Lambda</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/videos/&lt;uuid&gt;/stream/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Stream video URLs</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">Signed CloudFront URLs 24h validity</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/categories/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">List categories</td>
+                                        <td class="p-3 text-green-400">Public</td>
+                                        <td class="p-3 text-xs">Cached 1h</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/tags/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">List tags</td>
+                                        <td class="p-3 text-green-400">Public</td>
+                                        <td class="p-3 text-xs">Cached 30min</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <!-- Discovery System -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-cyan-200 mb-4 border-b border-cyan-500/30 pb-2">Discovery System </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-slate-300">
+                                <thead class="bg-slate-800/50 text-cyan-300">
+                                    <tr>
+                                        <th class="p-3 text-left">Endpoint</th>
+                                        <th class="p-3 text-left">Method</th>
+                                        <th class="p-3 text-left">Description</th>
+                                        <th class="p-3 text-left">Auth</th>
+                                        <th class="p-3 text-left">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700">
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/search/videos/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Search videos</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">Redis cache + OpenSearch</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/search/autocomplete/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Autocomplete suggestions</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">Redis prefix + OpenSearch fallback</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/search/trending/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Trending videos</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">Redis 15min → DynamoDB → OpenSearch</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/search/popular/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Popular videos</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">DynamoDB + OpenSearch</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/search/related/&lt;uuid&gt;/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Related videos</td>
+                                        <td class="p-3 text-green-400">Public/Auth</td>
+                                        <td class="p-3 text-xs">OpenSearch "More Like This"</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+        
+                    <!-- Analytics -->
+                    <div class="mb-6">
+                        <h3 class="text-lg font-bold text-cyan-200 mb-4 border-b border-cyan-500/30 pb-2">Analytics </h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-slate-300">
+                                <thead class="bg-slate-800/50 text-cyan-300">
+                                    <tr>
+                                        <th class="p-3 text-left">Endpoint</th>
+                                        <th class="p-3 text-left">Method</th>
+                                        <th class="p-3 text-left">Description</th>
+                                        <th class="p-3 text-left">Auth</th>
+                                        <th class="p-3 text-left">Notes</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-700">
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/videos/&lt;uuid&gt;/views/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Track video view</td>
+                                        <td class="p-3 text-green-400">Public</td>
+                                        <td class="p-3 text-xs">Async DynamoDB + SNS/SQS/Lambda</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/videos/&lt;uuid&gt;/views/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Get video views</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Aggregated from DynamoDB</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/videos/&lt;uuid&gt;/watchtime/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Track watchtime</td>
+                                        <td class="p-3 text-yellow-400">Auth (Optional)</td>
+                                        <td class="p-3 text-xs">Async DynamoDB</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/videos/&lt;uuid&gt;/engagement/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Video engagement metrics</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Aggregate from DynamoDB</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/popular/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Popular videos analytics</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Cached Redis → DynamoDB → OpenSearch</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/dashboard/</td>
+                                        <td class="p-3"><span class="bg-blue-900/40 text-blue-300 px-2 py-1 rounded">GET</span></td>
+                                        <td class="p-3">Dashboard metrics</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">DynamoDB + PostgreSQL</td>
+                                    </tr>
+                                    <tr class="hover:bg-slate-800/30">
+                                        <td class="p-3 font-mono text-xs text-cyan-400">/api/v1/analytics/export/</td>
+                                        <td class="p-3"><span class="bg-green-900/40 text-green-300 px-2 py-1 rounded">POST</span></td>
+                                        <td class="p-3">Export analytics report</td>
+                                        <td class="p-3 text-red-400">Admin</td>
+                                        <td class="p-3 text-xs">Async CSV/Excel generation via Lambda</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="mt-8 text-center text-slate-500 text-sm">
+                    <p>Thmanyah CMS Architecture v0.2 - 2026</p>
+                </div>
+            </div>
                 <div class="flex justify-center my-4">
                     <div class="w-1 h-8 bg-gradient-to-b from-blue-500 to-green-500"></div>
                 </div>
